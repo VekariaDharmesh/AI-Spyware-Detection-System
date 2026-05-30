@@ -113,7 +113,10 @@ export default function EnterpriseCommandCenter() {
   ]);
 
   // --- API Integrations Fetch Hooks ---
-  const API_BASE = "http://localhost:8000";
+  const rawApiBase = process.env.NEXT_PUBLIC_API_BASE;
+  const API_BASE = rawApiBase
+    ? (rawApiBase.startsWith("http") ? rawApiBase : `https://${rawApiBase}`)
+    : "http://localhost:8000";
 
   const fetchAPI = async (endpoint: string, options: any = {}) => {
     try {
