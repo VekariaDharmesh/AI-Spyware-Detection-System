@@ -1,0 +1,8 @@
+streamlit
+pandas
+plotly
+psutil
+scikit-learn
+fastapi
+uvicorn
+python-multipart

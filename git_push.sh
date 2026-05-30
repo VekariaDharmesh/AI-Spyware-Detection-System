@@ -24,7 +24,7 @@ if [ ! -d ".git" ]; then
     echo -e "${CYAN}[1/5] Initializing new Git repository in project folder...${NC}"
     git init
 else
-    echo -e "${CYAN}[1/5] Found existing local Git. Refreshing configurations...${NC}"
+    echo -e "${CYAN}[1/5] Local Git repository verified.${NC}"
 fi
 
 # 2. Rename default branch to main
@@ -35,14 +35,32 @@ echo -e "${CYAN}[2/5] Binding remote origin to VekariaDharmesh/AI-Spyware-Detect
 git remote remove origin 2>/dev/null
 git remote add origin https://github.com/VekariaDharmesh/AI-Spyware-Detection-System.git
 
-# 4. Stage and commit only local project files
-echo -e "${CYAN}[3/5] Staging files...${NC}"
-git add .
+# 4. Force-stage only the correct source files, bypassing parent-level gitignores
+echo -e "${CYAN}[3/5] Force-staging core project assets...${NC}"
+git add -f .gitignore
+git add -f README.md
+git add -f run_dev.sh
+git add -f git_push.sh
+git add -f system_architecture_report.md
 
+# Force add Python backend files (excluding database/caches)
+git add -f spyware_detection_project/*.py
+git add -f spyware_detection_project/requirements_universal.txt
+
+# Force add Next.js React frontend configurations and source directory (safely skipping node_modules & .next)
+git add -f frontend/package.json
+git add -f frontend/package-lock.json
+git add -f frontend/tsconfig.json
+git add -f frontend/next.config.ts
+git add -f frontend/eslint.config.mjs
+git add -f frontend/postcss.config.mjs
+git add -f frontend/src/
+
+# 5. Commit changes
 echo -e "${CYAN}[4/5] Committing changes...${NC}"
 git commit -m "feat: complete modern SaaS UI/UX redesign and FastAPI REST backend engine"
 
-# 5. Push and bind upstream
+# 6. Push and bind upstream
 echo -e "${CYAN}[5/5] Force-pushing package to remote GitHub repository...${NC}"
 echo -e "${CYAN}Note: If prompted, please enter your GitHub username and Personal Access Token (PAT).${NC}"
 
